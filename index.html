@@ -286,7 +286,8 @@ html.navon .top{z-index:50;box-shadow:none}
 .back{display:flex;align-items:center;gap:8px;font-weight:700;height:44px;padding-right:8px;margin-left:-4px}
 .back svg{width:20px;height:20px}
 .cob h2{font-weight:800;font-size:17px;margin-left:auto;white-space:nowrap}
-.cow{max-width:1000px;margin:0 auto;padding:18px var(--pad) 48px;display:grid;gap:26px}
+.cow{max-width:1000px;margin:0 auto;padding:18px var(--pad) 48px;display:grid;grid-template-columns:minmax(0,1fr);gap:26px}
+.cow>*{min-width:0}
 .fs h3{font-weight:800;font-size:16px;margin-bottom:12px}
 .coi{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
 .coi .ph{width:52px;aspect-ratio:1/1;background:var(--paper);overflow:hidden}
@@ -318,7 +319,7 @@ html.navon .top{z-index:50;box-shadow:none}
 .sum .r{display:flex;justify-content:space-between;gap:12px;padding:6px 0}
 .sum .r span:last-child{font-weight:800;white-space:nowrap}
 .sum .r.big{font-size:19px;font-weight:800;border-top:1px solid var(--line);margin-top:6px;padding-top:12px}
-.sum .nt{color:var(--mut);font-size:12.5px;margin-top:8px}
+.sum .snt{color:var(--mut);font-size:12.5px;margin-top:8px}
 .go{width:100%;margin-top:14px}
 .done{display:none;grid-template-columns:minmax(0,1fr)}.done>*{min-width:0}
 .co.fin .form,.co.fin .side{display:none}.co.fin .done{display:grid;gap:16px;grid-column:1/-1;max-width:720px}
@@ -418,6 +419,8 @@ html.navon .top{z-index:50;box-shadow:none}
 }
 
 /* ===== night: каталог, карточки ===== */
+.coi .ph img,.dl .ph img,.dl img,.sr-i img{mix-blend-mode:multiply}
+
 .srb{width:44px;height:44px;display:grid;place-items:center;color:var(--ink)}
 .srb svg{width:22px;height:22px}
 .cartb b[hidden]{display:none}
@@ -647,6 +650,15 @@ html.ready .top .wm{opacity:1;transform:none}
   .hs-tr{transition:none}.hs-dots button.on i::after{animation:none;transform:scaleX(1)}
   *,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}
 }
+
+@media (min-width:900px){
+  .menu{justify-content:flex-start!important;gap:8px!important;height:auto!important;padding:12px 0!important}
+  .menu button{height:38px!important}
+  .dnav{gap:24px}
+  .dnav button{white-space:nowrap}
+}
+@media (min-width:900px) and (max-width:1399px){.dnav button:last-child{display:none}.cartb .cl{display:none}.dnav{gap:20px}}
+@media (min-width:900px) and (max-width:1699px){.dnav button:nth-child(4),.dnav button:nth-child(5){display:none}}
 </style>
 </head>
 <body>
@@ -785,7 +797,7 @@ html.ready .top .wm{opacity:1;transform:none}
 
 <section class="co" id="co" role="dialog" aria-modal="true" aria-labelledby="coT">
   <div class="cob"><div class="wrap">
-    <button class="back" type="button" id="coBack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg><span data-i="cart"></span></button>
+    <button class="back" type="button" id="coBack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg><span></span></button>
     <h2 id="coT"></h2>
     <div class="lang" role="group" data-ia="lang_aria"><button type="button" data-l="ua" aria-pressed="false">Укр</button><button type="button" data-l="ru" aria-pressed="true">Рус</button></div>
   </div></div>
@@ -821,7 +833,7 @@ html.ready .top .wm{opacity:1;transform:none}
         <div class="r"><span data-i="s_goods"></span><span id="sT"></span></div>
         <div class="r big"><span data-i="pay_now"></span><span id="sNow"></span></div>
         <div class="r"><span data-i="pay_later"></span><span id="sLater"></span></div>
-        <div class="nt" data-i="np_note"></div>
+        <div class="snt" data-i="np_note"></div>
       </div>
       <button class="btn go" type="button" id="coGo" data-i="confirm"></button>
     </div>
@@ -1175,7 +1187,7 @@ ru:{
  add:'В корзину',pick_size:'Выберите размер',in_cart:'Уже в корзине',added:'Добавлено в корзину',
  total:'Итого',checkout:'Оформить заказ',remove:'Убрать',empty:'В корзине пусто',to_cat:'Вернуться в каталог',
  ci_stock:'в наличии · будет {d}',ci_order:'под заказ · будет {d}',
- co_h:'Оформление',s_items:'Ваш заказ',s_contact:'Контакты',name_l:'Имя',name_ph:'Как к вам обращаться',phone_l:'Телефон',
+ co_h:'Оформление',fin_h:'Заказ',s_items:'Ваш заказ',s_contact:'Контакты',name_l:'Имя',name_ph:'Как к вам обращаться',phone_l:'Телефон',
  s_ship:'Доставка Новой Почтой',city_l:'Город',city_ph:'Начните вводить город',branch_l:'Отделение или почтомат',branch_ph:'Номер, например 12',
  s_pay:'Оплата',pay_card:'Картой онлайн',pay_cod:'Наложенный платёж',
  pn_card:'Вещи в наличии оплачиваются сразу.',pn_cod:'Вещи в наличии оплачиваются при получении.',pn_ord:'За вещи под заказ — предоплата {p}% картой, остальное при получении.',
@@ -1230,7 +1242,7 @@ ua:{
  add:'До кошика',pick_size:'Оберіть розмір',in_cart:'Уже в кошику',added:'Додано до кошика',
  total:'Разом',checkout:'Оформити замовлення',remove:'Прибрати',empty:'У кошику порожньо',to_cat:'Повернутися до каталогу',
  ci_stock:'в наявності · буде {d}',ci_order:'під замовлення · буде {d}',
- co_h:'Оформлення',s_items:'Ваше замовлення',s_contact:'Контакти',name_l:"Ім'я",name_ph:'Як до вас звертатися',phone_l:'Телефон',
+ co_h:'Оформлення',fin_h:'Замовлення',s_items:'Ваше замовлення',s_contact:'Контакти',name_l:"Ім'я",name_ph:'Як до вас звертатися',phone_l:'Телефон',
  s_ship:'Доставка Новою Поштою',city_l:'Місто',city_ph:'Почніть вводити місто',branch_l:'Відділення або поштомат',branch_ph:'Номер, наприклад 12',
  s_pay:'Оплата',pay_card:'Карткою онлайн',pay_cod:'Накладений платіж',
  pn_card:'Речі в наявності оплачуються одразу.',pn_cod:'Речі в наявності оплачуються при отриманні.',pn_ord:'За речі під замовлення — передоплата {p}% карткою, решта при отриманні.',
@@ -1349,6 +1361,8 @@ var io=('IntersectionObserver' in window)&&!RM?new IntersectionObserver(function
   vis.forEach(function(el,n){el.style.transitionDelay=Math.min(n,7)*55+'ms';el.classList.add('in');io.unobserve(el)});
 },{rootMargin:'0px 0px -6% 0px'}):null;
 function watch(els){els.forEach(function(el){if(io){el.classList.add('rv');io.observe(el)}})}
+/* страховка: при быстром скролле (WebKit) IO может пропустить карточку — всё, что уже выше низа экрана, показываем */
+var rvT=0;window.addEventListener('scroll',function(){if(!io||rvT)return;rvT=setTimeout(function(){rvT=0;var H=innerHeight;$$('.rv:not(.in)').forEach(function(el){if(el.getBoundingClientRect().top<H){el.classList.add('in');io.unobserve(el)}})},120)},{passive:true});
 function renderGrid(keep){
   var L=listOf();if(!keep)shown=PAGE;
   $('#catH').textContent=query?t('s_res',{q:query}):t('c_'+filter);
@@ -1479,7 +1493,8 @@ function renderCo(){
   $('#coGo').classList.toggle('dim',ord&&!$('#ack').checked);
 }
 function coState(s){var co=$('#co');co.classList.remove('py','fin');if(s)co.classList.add(s);
-  $('#coT').textContent=t(s==='py'?'py_h':'co_h');co.scrollTop=0;
+  $('#coT').textContent=t(s==='py'?'py_h':s==='fin'?'fin_h':'co_h');co.scrollTop=0;
+  $('#coBack span').textContent=t(s==='py'?'co_h':s==='fin'?'catalog':'cart');
   var w=$('#cow');if(!RM&&w.animate)w.animate([{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],{duration:380,easing:'cubic-bezier(.2,.8,.2,1)'})}
 function openCo(){
   if(!cart.length)return;
@@ -1704,7 +1719,7 @@ function rerender(){
   applyStatic();renderNavs();renderGrid(true);renderCartBtn();renderCart();
   if(curItem){var s=curSize;renderSheet();curSize=s;$$('#shSz button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.sz===s)})}
   renderCo();renderPay();if(finished)renderDone();
-  if($('#co').classList.contains('py'))$('#coT').textContent=t('py_h');
+  var cs=$('#co').classList;$('#coT').textContent=t(cs.contains('py')?'py_h':cs.contains('fin')?'fin_h':'co_h');$('#coBack span').textContent=t(cs.contains('py')?'co_h':cs.contains('fin')?'catalog':'cart');
   if($('#srch').classList.contains('on'))renderSearch();
   $('#toast').classList.remove('on');
 }
