@@ -418,6 +418,12 @@ html.navon .top{z-index:50;box-shadow:none}
   .cob h2{display:none}
 }
 
+
+/* тач-цели ≥44px без смены вида */
+.hs-dots button,.tabs button,.f-links a,.f-links button,.f-list a,.f-list button,.sec-a{position:relative}
+.hs-dots button::after,.tabs button::after,.sec-a::after{content:'';position:absolute;left:0;right:0;top:50%;height:44px;transform:translateY(-50%)}
+@media (max-width:899px){.cartb{min-width:44px;justify-content:center}}
+footer a,footer button{min-height:44px;display:inline-flex;align-items:center}
 /* ===== night: каталог, карточки ===== */
 .eta2{display:block;text-align:right}.eta2 small{font-weight:500;color:var(--mut);font-size:12px}
 .sum .r{align-items:flex-start}
