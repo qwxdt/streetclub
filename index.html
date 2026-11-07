@@ -419,6 +419,8 @@ html.navon .top{z-index:50;box-shadow:none}
 }
 
 /* ===== night: каталог, карточки ===== */
+.eta2{display:block;text-align:right}.eta2 small{font-weight:500;color:var(--mut);font-size:12px}
+.sum .r{align-items:flex-start}
 .coi .ph img,.dl .ph img,.dl img,.sr-i img{mix-blend-mode:multiply}
 
 .srb{width:44px;height:44px;display:grid;place-items:center;color:var(--ink)}
@@ -1207,7 +1209,7 @@ ru:{
  s_acc:'аксессуар',s_jk:'куртка',
  c_shoes:'Обувь',search:'Поиск',search_ph:'Бренд или вещь',s_none:'Ничего не нашли',s_all:'Все результаты · {n}',s_res:'Поиск: «{q}»',s_clear:'Сбросить',
  sort_l:'Сортировка',so_new:'Сначала новые',so_lo:'Сначала дешевле',so_hi:'Сначала дороже',more:'Показать ещё',shown:'{a} из {b}',
- tag_st:'в наличии',tag_or:'под заказ ~{n} дн',photo:'Фото {i} из {n}',
+ tag_st:'в наличии',tag_or_s:'под заказ',tag_or:'под заказ ~{n} дн',photo:'Фото {i} из {n}',
  t_kedy:'кеды',t_clogs:'сабо',
  go_co:'Оформить',to_cart:'Корзина',q_minus:'Меньше',q_plus:'Больше',
  pay_card_s:'Apple Pay, Google Pay или картой',pay_cod_s:'Оплата на Новой Почте при получении',
@@ -1262,7 +1264,7 @@ ua:{
  s_acc:'аксесуар',s_jk:'куртка',
  c_shoes:'Взуття',search:'Пошук',search_ph:'Бренд або річ',s_none:'Нічого не знайшли',s_all:'Усі результати · {n}',s_res:'Пошук: «{q}»',s_clear:'Скинути',
  sort_l:'Сортування',so_new:'Спочатку нові',so_lo:'Спочатку дешевші',so_hi:'Спочатку дорожчі',more:'Показати ще',shown:'{a} з {b}',
- tag_st:'в наявності',tag_or:'під замовлення ~{n} дн',photo:'Фото {i} з {n}',
+ tag_st:'в наявності',tag_or_s:'під замовлення',tag_or:'під замовлення ~{n} дн',photo:'Фото {i} з {n}',
  t_kedy:'кеди',t_clogs:'сабо',
  go_co:'Оформити',to_cart:'Кошик',q_minus:'Менше',q_plus:'Більше',
  pay_card_s:'Apple Pay, Google Pay або карткою',pay_cod_s:'Оплата на Новій Пошті при отриманні',
@@ -1580,7 +1582,8 @@ function renderDone(){
   var o=finished;if(!o)return;
   var anyOr=o.cart.some(function(c){return BY[c.id].m==='or'});
   $('#doneNo').textContent=t('done_no',{n:o.no});
-  $('#okEta').textContent=etaOf(o.cart);
+  var gSt=o.cart.filter(function(c){return BY[c.id].m==='st'}),gOr=o.cart.filter(function(c){return BY[c.id].m!=='st'});
+  $('#okEta').innerHTML=(gSt.length&&gOr.length)?'<span class="eta2">'+etaOf(gSt)+' <small>'+t('tag_st')+'</small></span><span class="eta2">'+etaOf(gOr)+' <small>'+t('tag_or_s')+'</small></span>':etaOf(o.cart);
   $('#okPaid').textContent=money(o.k.now);$('#okLater').textContent=money(o.k.later);
   $('#okPaidR').hidden=!o.k.now;
   var st=[o.k.now?'ok_s1':'ok_s1b',anyOr?'ok_s2':'ok_s2b','ok_s3','ok_s4'];
@@ -1668,7 +1671,7 @@ document.addEventListener('keydown',function(e){
 
 
 /* ---------- v3: разделы, меню, слайдер ---------- */
-var TILE_IMG={new:1053,hood:1034,knit:1001,tee:990,pants:916,outer:938,shoes:914,acc:1030};
+var TILE_IMG={new:1039,hood:1034,knit:1001,tee:990,pants:916,outer:938,shoes:914,acc:1030};
 var ARW='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 function countOf(c){return ITEMS.filter(function(i){return c==='new'||catOf(i)===c}).length}
 function words(n){var a=n%10,b=n%100;return n+' '+t(a===1&&b!==11?'w1':(a>=2&&a<=4&&(b<10||b>=20))?'w2':'w5')}
