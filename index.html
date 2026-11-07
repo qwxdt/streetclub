@@ -1,0 +1,786 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0f0f0d">
+<title>Street Club — стритвир с доставкой по Украине</title>
+<link rel="preload" href="fonts/manrope-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="img/p1039.webp" as="image">
+<style>
+@font-face{font-family:Mont;font-weight:400 800;font-display:swap;src:url(fonts/mont-cyrillic.woff2) format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:Mont;font-weight:400 800;font-display:swap;src:url(fonts/mont-cyrillic-ext.woff2) format('woff2');unicode-range:U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F}
+@font-face{font-family:Mont;font-weight:400 800;font-display:swap;src:url(fonts/mont-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:SSerif;font-weight:700;font-display:swap;src:url(fonts/ss-cyrillic.woff2) format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:SSerif;font-weight:700;font-display:swap;src:url(fonts/ss-cyrillic-ext.woff2) format('woff2');unicode-range:U+0460-052F,U+20B4}
+@font-face{font-family:SSerif;font-weight:700;font-display:swap;src:url(fonts/ss-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+2000-206F,U+2122,U+2212}
+
+:root{
+  --bg:#fbf7ef;--panel:#fff;--panel2:#f1ece2;--line:#e4ddcf;
+  --ink:#141414;--mut:#77726a;--acc:#141414;--acc-ink:#fbf7ef;--err:#c8321f;
+  --st:#2f7d3a;--or:#b0610f;--paper:#efe9e1;
+  --pad:12px;--hh:64px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--hh) + 52px);-webkit-text-size-adjust:100%}
+html.lock,html.lock body{overflow:hidden}
+body{background:var(--bg);color:var(--ink);font:500 14px/1.45 Mont,system-ui,sans-serif;min-width:320px;overflow-x:hidden}
+img{display:block;max-width:100%}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.nw{white-space:nowrap}
+.wrap{width:100%;max-width:1320px;margin:0 auto;padding:0 var(--pad)}
+.ser{font-family:SSerif,Georgia,serif;font-weight:700}
+
+/* top strip + header */
+.strip{background:var(--ink);color:var(--bg);font-size:11.5px;font-weight:600;text-align:center;padding:7px 10px;line-height:1.3}
+.strip a{text-decoration:underline;text-underline-offset:2px}
+.top{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .bar{height:var(--hh);display:flex;align-items:center;gap:10px}
+.logo{display:grid;place-items:center;width:52px;height:52px;border:1.5px solid var(--ink);font:700 12.5px/1 SSerif,Georgia,serif;text-align:center;letter-spacing:.01em;flex:none}
+.logo span{display:block}
+.brandtx{font-weight:600;font-size:12px;line-height:1.15;margin-right:auto;color:var(--ink)}
+.brandtx b{display:block;font-weight:700}
+.nav{display:none}
+.lang{display:flex;align-items:center;gap:2px;flex:none;font-size:12px}
+.lang button{height:36px;padding:0 5px;font-weight:600;color:var(--mut)}
+.lang button[aria-pressed=true]{color:var(--ink);font-weight:800;text-decoration:underline;text-underline-offset:4px}
+.cartb{height:40px;padding:0 4px 0 6px;color:var(--ink);font-weight:700;display:flex;align-items:center;gap:6px;flex:none;white-space:nowrap;position:relative}
+.cartb svg{width:24px;height:24px}
+.cartb b{position:absolute;top:2px;left:20px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--ink);color:var(--bg);font-size:10.5px;line-height:17px;text-align:center}
+.cartb .cl{display:none}
+.menu{display:flex;gap:22px;overflow-x:auto;scrollbar-width:none;height:44px;align-items:center;border-top:1px solid var(--line);font-weight:700;font-size:13px;white-space:nowrap}
+.menu::-webkit-scrollbar{display:none}
+.menu button{height:44px;color:var(--ink);border-bottom:2px solid transparent}
+.menu button[aria-pressed=true]{border-color:var(--ink)}
+
+/* hero banners */
+.hero{padding:12px 0 0}
+.hero .wrap{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ban{position:relative;display:block;aspect-ratio:3/4;background:var(--paper);overflow:hidden}
+.ban img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.ban:hover img{transform:scale(1.04)}
+.ban h2{position:absolute;left:12px;top:12px;font:800 clamp(20px,6.6vw,64px)/.95 Mont,sans-serif;text-transform:uppercase;letter-spacing:-.01em;color:var(--ink)}
+
+/* advantages */
+.adv{padding:26px 0 8px}
+.adv .wrap{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 12px}
+.adv .it{text-align:center}
+.adv svg{width:40px;height:40px;margin:0 auto 8px;display:block}
+.adv b{display:block;font-weight:700;font-size:13.5px;line-height:1.25}
+.adv span{display:block;color:var(--mut);font-size:12.5px;margin-top:4px;line-height:1.35}
+
+/* catalog */
+.cat{padding:28px 0 48px}
+.cat-h{text-align:center;margin-bottom:16px}
+.cat-h h2{font-weight:800;font-size:20px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 10px}
+.card{display:block;text-align:left;width:100%;min-width:0;background:var(--panel);padding:0 0 12px}
+.card .ph{aspect-ratio:1/1;background:var(--paper);overflow:hidden}
+.card .ph img{width:100%;height:100%;object-fit:cover;transition:transform .35s}
+.card:hover .ph img{transform:scale(1.04)}
+.card .t{margin:10px 10px 0;font-weight:500;font-size:13px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.6em}
+.card .p{margin:6px 10px 0;font-weight:800;font-size:15px;white-space:nowrap}
+
+/* footer */
+.foot{background:var(--ink);color:var(--bg);padding:36px 0 28px}
+.foot .logo{border-color:var(--bg);width:64px;height:64px;font-size:15px}
+.foot h2{font-weight:800;font-size:18px;margin-top:22px}
+.foot p{margin-top:6px;color:#bdb6aa;max-width:30em}
+.cts{display:flex;flex-direction:column;gap:8px;margin-top:18px;max-width:420px}
+.cts a{display:flex;align-items:center;justify-content:space-between;gap:12px;height:48px;padding:0 16px;border:1px solid #3a3833;font-weight:700;white-space:nowrap}
+.cts a span:last-child{color:#bdb6aa;font-weight:500;font-size:13px}
+.cts a:hover{border-color:var(--bg)}
+.foot .wm{display:none}
+
+/* overlays */
+.scrim{position:fixed;inset:0;z-index:30;background:rgba(20,20,20,.45);opacity:0;visibility:hidden;transition:opacity .25s,visibility 0s .25s}
+.scrim.on{opacity:1;visibility:visible;transition:opacity .25s}
+.sheet,.drawer{position:fixed;z-index:31;background:var(--bg);visibility:hidden;transition:transform .3s cubic-bezier(.2,.8,.2,1),visibility 0s .3s;overscroll-behavior:contain}
+.sheet.on,.drawer.on{visibility:visible;transform:none;transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.sheet{left:0;right:0;bottom:0;top:0;transform:translateY(calc(100% + 40px));overflow-y:auto}
+.xb{position:absolute;top:10px;right:10px;z-index:3;width:42px;height:42px;background:var(--bg);border:1px solid var(--line);display:grid;place-items:center}
+.xb svg{width:18px;height:18px}
+.sh-ph{aspect-ratio:1/1;background:var(--paper);overflow:hidden}
+.sh-ph img{width:100%;height:100%;object-fit:cover}
+.sh-b{padding:16px var(--pad) 0}
+.sh-b h3{font-weight:700;font-size:19px;line-height:1.25}
+.sh-b .ty{color:var(--mut);margin-top:2px;font-size:13px}
+.sh-b .pr{font-weight:800;font-size:24px;margin-top:12px;white-space:nowrap}
+.lbl{font-weight:700;font-size:13px;margin:18px 0 8px;display:flex;justify-content:space-between;gap:10px}
+.lbl .er{color:var(--err);font-weight:600}
+.sizes{display:flex;flex-wrap:wrap;gap:6px}
+.sizes button{min-width:52px;height:44px;padding:0 12px;border:1px solid #cfc7b8;background:var(--panel);font-weight:600;white-space:nowrap}
+.sizes button:hover{border-color:var(--ink)}
+.sizes button[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.sizes.bad button{border-color:var(--err)}
+.avail{padding:0}
+.avail .row{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:1px solid var(--line);background:var(--panel)}
+.avail .row+.row{border-top:0}
+.avail .row.off{opacity:.42}
+.avail .dot{width:16px;height:16px;border-radius:50%;border:1.5px solid currentColor;flex:none;margin-top:2px;display:grid;place-items:center}
+.avail .row.on .dot::after{content:'';width:8px;height:8px;border-radius:50%;background:currentColor}
+.avail .st{color:var(--st)}.avail .or{color:var(--or)}
+.avail .l1{font-weight:700;color:var(--ink)}
+.avail .l1 em{font-style:normal;font-weight:700}
+.avail .l2{color:var(--mut);font-size:12.5px;margin-top:2px}
+.sh-add{position:sticky;bottom:0;padding:12px var(--pad) calc(12px + env(safe-area-inset-bottom));margin-top:18px;background:var(--bg);border-top:1px solid var(--line)}
+.sh-add .btn{width:100%}
+.perks{padding:4px var(--pad) 24px;display:grid;gap:10px}
+.perks div{display:flex;gap:10px;align-items:center;font-size:12.5px;font-weight:600}
+.perks svg{width:26px;height:26px;flex:none}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:50px;padding:0 24px;background:var(--acc);color:var(--acc-ink);font-weight:700;font-size:15px;white-space:nowrap;transition:background .15s,transform .15s}
+.btn:hover{background:#333}.btn:active{transform:scale(.99)}
+.btn.ghost{background:transparent;border:1.5px solid var(--ink);color:var(--ink)}
+.btn.ghost:hover{background:var(--ink);color:var(--bg)}
+.btn[disabled]{background:#cfc9be;color:#8a847a;cursor:not-allowed;transform:none}
+
+.drawer{top:0;right:0;bottom:0;width:100%;max-width:440px;transform:translateX(calc(100% + 40px));display:flex;flex-direction:column}
+.dh{display:flex;align-items:center;justify-content:space-between;height:var(--hh);padding:0 6px 0 var(--pad);border-bottom:1px solid var(--line);flex:none}
+.dh h3{font-weight:800;font-size:18px}
+.dh .xb{position:static}
+.dl{flex:1;overflow-y:auto;padding:4px var(--pad)}
+.ci{display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.ci .ph{width:76px;aspect-ratio:1/1;background:var(--paper);overflow:hidden}
+.ci .ph img{width:100%;height:100%;object-fit:cover}
+.ci .n{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ci .m{color:var(--mut);font-size:12.5px;margin-top:2px}
+.ci .m b{color:var(--ink);font-weight:700}
+.ci .m .st{color:var(--st);font-weight:700}.ci .m .or{color:var(--or);font-weight:700}
+.ci .r{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+.ci .r span{font-weight:800;white-space:nowrap}
+.ci .rm{font-size:12.5px;color:var(--mut);text-decoration:underline;padding:8px 0}
+.empty{padding:48px 0;text-align:center;color:var(--mut)}
+.empty .btn{margin-top:18px}
+.df{flex:none;padding:14px var(--pad) calc(14px + env(safe-area-inset-bottom));border-top:1px solid var(--line)}
+.df .tot{display:flex;justify-content:space-between;font-weight:800;font-size:18px;margin-bottom:12px}
+.df .btn{width:100%}
+
+/* checkout */
+.co{position:fixed;inset:0;z-index:40;background:var(--bg);overflow-y:auto;visibility:hidden;transform:translateY(calc(100% + 40px));transition:transform .3s cubic-bezier(.2,.8,.2,1),visibility 0s .3s;overscroll-behavior:contain}
+.co.on{visibility:visible;transform:none;transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.cob{position:sticky;top:0;z-index:2;background:var(--bg);height:var(--hh);border-bottom:1px solid var(--line)}
+.cob .wrap{height:100%;display:flex;align-items:center;gap:12px}
+.back{display:flex;align-items:center;gap:8px;font-weight:700;height:44px;padding-right:8px;margin-left:-4px}
+.back svg{width:20px;height:20px}
+.cob h2{font-weight:800;font-size:17px;margin-left:auto;white-space:nowrap}
+.cow{max-width:1000px;margin:0 auto;padding:18px var(--pad) 48px;display:grid;gap:26px}
+.fs h3{font-weight:800;font-size:16px;margin-bottom:12px}
+.coi{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.coi .ph{width:52px;aspect-ratio:1/1;background:var(--paper);overflow:hidden}
+.coi .ph img{width:100%;height:100%;object-fit:cover}
+.coi .n{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.coi .m{font-size:12.5px;color:var(--mut)}
+.coi .m .st{color:var(--st);font-weight:700}.coi .m .or{color:var(--or);font-weight:700}
+.coi .pp{font-weight:800;white-space:nowrap}
+.fld{display:block;margin-bottom:12px}
+.fld span{display:block;font-weight:600;font-size:12.5px;color:var(--mut);margin-bottom:6px}
+.fld input{width:100%;height:50px;padding:0 14px;border:1px solid #cfc7b8;background:var(--panel);font-size:16px;border-radius:0}
+.fld input:focus{outline:0;border-color:var(--ink)}
+.fld.bad input{border-color:var(--err)}
+.fld em{display:none;font-style:normal;color:var(--err);font-size:12.5px;margin-top:4px;font-weight:600}
+.fld.bad em{display:block}
+.two{display:grid;gap:0 12px}
+.radio{display:flex;align-items:center;gap:12px;padding:14px;border:1px solid #cfc7b8;background:var(--panel);margin-bottom:8px;cursor:pointer;font-weight:600}
+.radio input{width:20px;height:20px;accent-color:var(--ink);flex:none}
+.radio:has(input:checked){border-color:var(--ink)}
+.pnote{color:var(--mut);font-size:13px;margin-top:6px}
+.steps{display:flex;flex-wrap:nowrap;align-items:center;justify-content:space-between;gap:6px;font-weight:700;font-size:12.5px;padding:14px 12px;background:var(--panel2)}
+.steps svg{width:12px;height:12px;color:var(--or);flex:none}
+.steps span{white-space:nowrap}.steps i{font-style:normal}
+.ack{display:flex;gap:12px;align-items:flex-start;margin-top:10px;padding:14px;border:1px solid #cfc7b8;background:var(--panel);cursor:pointer;font-weight:600}
+.ack input{width:22px;height:22px;accent-color:var(--ink);flex:none;margin-top:1px}
+.ack:has(input:checked){border-color:var(--ink)}
+.ack.bad{border-color:var(--err)}
+.sum{background:var(--panel);border:1px solid var(--line);padding:16px}
+.sum .r{display:flex;justify-content:space-between;gap:12px;padding:6px 0}
+.sum .r span:last-child{font-weight:800;white-space:nowrap}
+.sum .r.big{font-size:19px;font-weight:800;border-top:1px solid var(--line);margin-top:6px;padding-top:12px}
+.sum .nt{color:var(--mut);font-size:12.5px;margin-top:8px}
+.go{width:100%;margin-top:14px}
+.done{display:none;grid-template-columns:minmax(0,1fr)}.done>*{min-width:0}
+.co.fin .form,.co.fin .side{display:none}.co.fin .done{display:grid;gap:16px;grid-column:1/-1;max-width:720px}
+.done h2{font:700 clamp(28px,8vw,44px)/1.05 SSerif,Georgia,serif}
+.done .no{font-weight:800}
+.done p{color:var(--mut)}
+.done pre{white-space:pre-wrap;word-break:break-word;font:500 13.5px/1.55 Mont,sans-serif;background:var(--panel);border:1px solid var(--line);padding:16px}
+.done .acts{display:grid;gap:10px;max-width:460px}
+
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));z-index:60;transform:translate(-50%,calc(100% + 60px));background:var(--ink);color:var(--bg);padding:12px 18px;font-weight:600;white-space:nowrap;max-width:calc(100vw - 32px);transition:transform .25s}
+.toast.on{transform:translate(-50%,0)}
+
+@media (min-width:640px){
+  :root{--pad:20px}
+  .adv .wrap{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:28px 14px}
+  .two{grid-template-columns:1fr 1fr}
+  .cts{flex-direction:row;max-width:none;flex-wrap:wrap}
+  .cts a{min-width:240px}
+  .cartb .cl{display:inline}
+  .cartb b{left:22px}
+  .cartb svg{margin-right:4px}
+}
+@media (min-width:900px){
+  :root{--pad:32px;--hh:84px}
+  .strip{font-size:12.5px}
+  .logo{width:64px;height:64px;font-size:15px}
+  .brandtx{font-size:13px}
+  .menu{justify-content:center;gap:36px;font-size:14px;height:50px}
+  .menu button{height:50px}
+  .hero{padding-top:20px}
+  .hero .wrap{gap:16px}
+  .ban{aspect-ratio:4/3.4}
+  .ban h2{left:28px;top:24px}
+  .adv{padding:44px 0 16px}
+  .cat-h h2{font-size:26px}
+  .sheet{left:50%;right:auto;bottom:auto;top:50%;width:min(1000px,94vw);max-height:90vh;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);transform:translate(-50%,calc(-50% + 60px));opacity:0;transition:transform .25s,opacity .25s,visibility 0s .25s;overflow:hidden}
+  .sheet.on{transform:translate(-50%,-50%);opacity:1;transition:transform .25s,opacity .25s}
+  .sh-ph{aspect-ratio:auto;height:100%;min-height:540px}
+  .sh-in{overflow-y:auto;max-height:90vh;display:flex;flex-direction:column}
+  .sh-b{padding:32px 32px 0;flex:1}
+  .sh-add{padding:16px 32px 16px;position:static;border-top:0;margin-top:12px}
+  .perks{padding:4px 32px 28px}
+  .sh-b h3{font-size:24px}
+  .cat{padding-bottom:80px}
+  .coi{grid-template-columns:60px minmax(0,1fr) auto}
+  .coi .ph{width:60px}
+  .cow{grid-template-columns:minmax(0,1fr) 360px;align-items:start;gap:32px 48px;padding-top:32px}
+  .cow .form{display:grid;gap:26px}
+  .cow .side{position:sticky;top:calc(var(--hh) + 20px)}
+  .foot{padding:56px 0 36px}
+}
+@media (min-width:1200px){
+  .grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media (max-width:899px){.sh-in{display:block}}
+@media (max-width:359px){
+  :root{--pad:10px}
+  .brandtx{display:none}
+  .lang{margin-left:auto}
+  .logo{font-size:11.5px}
+  .lang button{padding:0 4px}
+  .grid{gap:18px 8px}
+  .ban h2{left:9px;top:9px}
+  .steps{font-size:11.5px;padding:12px 8px;gap:4px}.steps .cn{display:none}
+  .cob h2{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap bar">
+    <a class="logo" href="#top" aria-label="Street Club"><span>STREET<br>CLUB</span></a>
+    <div class="brandtx"><b>street club</b><span data-i="tagline"></span></div>
+    <div class="lang" role="group" data-ia="lang_aria"><button type="button" data-l="ua" aria-pressed="false">Укр</button><button type="button" data-l="ru" aria-pressed="true">Рус</button></div>
+    <button class="cartb" id="cartBtn" type="button" data-ia="cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a1 1 0 0 1-1 .8H7.2a1 1 0 0 1-1-.8L5 8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cl" data-i="my_cart"></span><b id="cartN">0</b></button>
+  </div>
+  <div class="wrap"><nav class="menu" id="menu"></nav></div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <a class="ban" href="#catalog" data-cat="hood"><img src="img/p1034.webp" width="580" height="550" alt="" fetchpriority="high"><h2 data-i="ban1"></h2></a>
+      <a class="ban" href="#catalog" data-cat="knit"><img src="img/p1001.webp" width="580" height="550" alt=""><h2 data-i="ban2"></h2></a>
+    </div>
+  </section>
+
+  <section class="adv">
+    <div class="wrap">
+      <div class="it"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M6 13l14-7 14 7v14l-14 7-14-7z"/><path d="M6 13l14 7 14-7M20 20v14"/></svg><b data-i="adv1"></b><span data-i="adv1s"></span></div>
+      <div class="it"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M4 22l32-12-9 24-6-9z"/><path d="M21 25l15-15"/></svg><b data-i="adv2"></b><span data-i="adv2s"></span></div>
+      <div class="it"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="5" y="11" width="30" height="21" rx="2"/><path d="M14 11l2.5-4h7l2.5 4"/><circle cx="20" cy="21.5" r="6"/></svg><b data-i="adv3"></b><span data-i="adv3s"></span></div>
+      <div class="it"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M3 10h21v17H3zM24 16h7l6 6v5H24z"/><circle cx="10" cy="29" r="3" fill="#fbf7ef"/><circle cx="30" cy="29" r="3" fill="#fbf7ef"/></svg><b data-i="adv4"></b><span data-i="adv4s"></span></div>
+    </div>
+  </section>
+
+  <section class="cat" id="catalog">
+    <div class="wrap">
+      <div class="cat-h"><h2 id="catH"></h2></div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot" id="contacts">
+  <div class="wrap">
+    <div class="logo"><span>STREET<br>CLUB</span></div>
+    <h2 data-i="foot_h"></h2>
+    <div class="cts">
+      <a href="https://t.me/danilovidd" target="_blank" rel="noopener"><span>Telegram</span><span>@danilovidd</span></a>
+      <a href="https://t.me/streetclubbb" target="_blank" rel="noopener"><span data-i="c_ch"></span><span>t.me/streetclubbb</span></a>
+      <a href="https://www.instagram.com/streetclubbbb" target="_blank" rel="noopener"><span>Instagram</span><span>@streetclubbbb</span></a>
+    </div>
+  </div>
+</footer>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="shT">
+  <button class="xb" type="button" id="shX" data-ia="close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+  <div class="sh-ph"><img id="shImg" alt="" width="580" height="550"></div>
+  <div class="sh-in">
+    <div class="sh-b">
+      <h3 id="shT"></h3>
+      <div class="ty" id="shTy"></div>
+      <div class="pr" id="shPr"></div>
+      <div class="lbl"><span data-i="size_l"></span><span class="er" id="shEr"></span></div>
+      <div class="sizes" id="shSz"></div>
+      <div class="lbl"><span data-i="avail_l"></span></div>
+      <div class="avail" id="shAv"></div>
+    </div>
+    <div class="sh-add"><button class="btn" type="button" id="shAdd"></button></div>
+  </div>
+</div>
+
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drT">
+  <div class="dh"><h3 id="drT" data-i="cart"></h3><button class="xb" type="button" id="drX" data-ia="close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></button></div>
+  <div class="dl" id="drL"></div>
+  <div class="df" id="drF"><div class="tot"><span data-i="total"></span><span id="drTot" class="nw"></span></div><button class="btn" type="button" id="drGo" data-i="checkout"></button></div>
+</aside>
+
+<section class="co" id="co" role="dialog" aria-modal="true" aria-labelledby="coT">
+  <div class="cob"><div class="wrap">
+    <button class="back" type="button" id="coBack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg><span data-i="cart"></span></button>
+    <h2 id="coT" data-i="co_h"></h2>
+    <div class="lang" role="group" data-ia="lang_aria"><button type="button" data-l="ua" aria-pressed="false">Укр</button><button type="button" data-l="ru" aria-pressed="true">Рус</button></div>
+  </div></div>
+  <div class="cow">
+    <div class="form" id="coForm">
+      <div class="fs"><h3 data-i="s_items"></h3><div id="coItems"></div></div>
+      <div class="fs">
+        <h3 data-i="s_contact"></h3>
+        <label class="fld" id="fN"><span data-i="name_l"></span><input id="iN" type="text" autocomplete="name" data-ip="name_ph"><em data-i="e_name"></em></label>
+        <label class="fld" id="fP"><span data-i="phone_l"></span><input id="iP" type="tel" inputmode="tel" autocomplete="tel" placeholder="+380 (__) ___-__-__"><em data-i="e_phone"></em></label>
+      </div>
+      <div class="fs">
+        <h3 data-i="s_ship"></h3>
+        <div class="two">
+          <label class="fld" id="fC"><span data-i="city_l"></span><input id="iC" type="text" list="cities" autocomplete="off" data-ip="city_ph"><em data-i="e_city"></em></label>
+          <label class="fld" id="fB"><span data-i="branch_l"></span><input id="iB" type="text" inputmode="numeric" autocomplete="off" data-ip="branch_ph"><em data-i="e_branch"></em></label>
+        </div>
+        <datalist id="cities"></datalist>
+      </div>
+      <div class="fs">
+        <h3 data-i="s_pay"></h3>
+        <label class="radio"><input type="radio" name="pay" value="card" checked><span data-i="pay_card"></span></label>
+        <label class="radio"><input type="radio" name="pay" value="cod"><span data-i="pay_cod"></span></label>
+        <div class="pnote" id="payNote"></div>
+      </div>
+      <div class="fs" id="orderBox">
+        <div class="steps" id="steps"></div>
+        <label class="ack" id="ackL"><input type="checkbox" id="ack"><span data-i="ack"></span></label>
+      </div>
+    </div>
+    <div class="side" id="coSide">
+      <div class="sum">
+        <div class="r"><span data-i="s_goods"></span><span id="sT"></span></div>
+        <div class="r big"><span data-i="pay_now"></span><span id="sNow"></span></div>
+        <div class="r"><span data-i="pay_later"></span><span id="sLater"></span></div>
+        <div class="nt" data-i="np_note"></div>
+      </div>
+      <button class="btn go" type="button" id="coGo" data-i="confirm"></button>
+    </div>
+    <div class="done" id="done">
+      <h2 data-i="done_h"></h2>
+      <div class="no" id="doneNo"></div>
+      <p data-i="done_p"></p>
+      <pre id="doneTxt"></pre>
+      <div class="acts">
+        <a class="btn" id="tgBtn" target="_blank" rel="noopener" data-i="tg_btn"></a>
+        <button class="btn ghost" type="button" id="cpBtn" data-i="copy"></button>
+        <button class="btn ghost" type="button" id="toCat" data-i="to_cat"></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+'use strict';
+try{history.scrollRestoration='manual'}catch(e){}
+
+/* ---------- constants (вынесены: уточнить у владельца) ---------- */
+var STOCK_DAYS=[1,2];        // «в наличии»: пост «1-2 дні»
+var ORDER_DAYS=[18,22];      // «под заказ»: пост «20 днів», разброс — допущение
+var ORDER_LEAD=20;           // «~20 дней» из постов
+var PREPAY_PCT=30;           // демо по образцу Parallel; сейчас у магазина 100% предоплата
+var ORDER_SIZES=['S','M','L','XL']; // если у вещи под заказ в посте нет размеров
+var TG='danilovidd';
+
+/* ---------- товары (посты канала) ---------- */
+var ITEMS=[
+ {id:1055,b:'Acne Studios',ty:'long',p:1500,s:['S','M'],m:'st'},
+ {id:1053,b:'Erd',ty:'knit',p:2100,s:['S'],m:'st'},
+ {id:1049,b:'Erd',ty:'crew',p:1700,s:['S'],m:'st'},
+ {id:1047,b:'Grailz Project',ty:'pants',p:2500,s:['S','M','L'],m:'st'},
+ {id:1045,b:'Undercover',ty:'long',p:1650,s:['M','L'],m:'st'},
+ {id:1043,b:'Mastermind',ty:'crew',p:2100,s:['S'],m:'st'},
+ {id:1041,b:'Paly Hollywood',ty:'long',p:1800,s:['S','M','L'],m:'st'},
+ {id:1039,b:'Grailz',ty:'zip',p:2500,s:['M'],m:'st'},
+ {id:1036,b:'Satoshi Nakamoto',ty:'long',p:1700,s:['S','M','L'],m:'st'},
+ {id:1034,b:'Erd',ty:'hoodie',p:2900,s:['S','M','L'],m:'st'},
+ {id:1026,b:'Erd',ty:'crew',p:2200,s:['S'],m:'st'},
+ {id:1019,b:'',ty:'cross',p:500,s:['ONE'],m:'st'},
+ {id:988,b:'Satoshi Nakamoto',ty:'jacket',p:1700,s:null,m:'or'},
+ {id:990,b:'Represent',ty:'tee',p:1400,s:null,m:'or'},
+ {id:998,b:'Vetements',ty:'tee',p:1500,s:null,m:'or'},
+ {id:1001,b:'Mastermind',ty:'knit',p:2800,s:null,m:'or'},
+ {id:965,b:'Pally Hollywood',ty:'zip',p:3200,s:null,m:'or'},
+ {id:967,b:'Erd',ty:'zip',p:3000,s:null,m:'or'},
+ {id:959,b:'Mowalola',ty:'polo',p:1600,s:null,m:'or'},
+ {id:916,b:'Erd',ty:'jeans',p:2300,s:null,m:'or'},
+ {id:1051,b:'Erd',ty:'tee',p:1600,s:null,m:'or'},
+ {id:978,b:'Erd',ty:'hoodie',p:2500,s:null,m:'or'},
+ {id:938,b:'',ty:'biker',p:2900,s:null,m:'or'},
+ {id:1030,b:'',ty:'xbelt',p:700,s:['ONE'],m:'or'}
+];
+var BY={};ITEMS.forEach(function(x){BY[x.id]=x});
+
+var MONTHS={
+ ru:['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'],
+ ua:['січня','лютого','березня','квітня','травня','червня','липня','серпня','вересня','жовтня','листопада','грудня']};
+var CITIES=[['Київ','Киев'],['Харків','Харьков'],['Одеса','Одесса'],['Дніпро','Днепр'],['Львів','Львов'],['Запоріжжя','Запорожье'],['Умань','Умань'],['Вінниця','Винница'],['Черкаси','Черкассы'],['Полтава','Полтава'],['Житомир','Житомир'],['Чернігів','Чернигов'],['Суми','Сумы'],['Тернопіль','Тернополь'],['Івано-Франківськ','Ивано-Франковск'],['Луцьк','Луцк'],['Рівне','Ровно'],['Хмельницький','Хмельницкий'],['Миколаїв','Николаев'],['Кропивницький','Кропивницкий'],['Біла Церква','Белая Церковь'],['Кременчук','Кременчуг']];
+
+/* ---------- словарь ---------- */
+var D={
+ru:{
+ nav_catalog:'Каталог',nav_contacts:'Контакты',cart:'Корзина',close:'Закрыть',lang_aria:'Язык',
+ tagline:'стритвир с доставкой по Украине',my_cart:'Моя корзина',ban1:'Худи',ban2:'Свитеры',
+ adv1:'В наличии',adv1s:'отправка за 1–2 дня',adv2:'Под заказ',adv2s:'выкуп в Китае, ~20 дней',adv3:'Выкуп по фото',adv3s:'найдём вещь, которой нет в каталоге',adv4:'Новая Почта',adv4s:'доставка по всей Украине',
+ c_all:'Все',c_new:'Новинки',c_hood:'Худи и зипки',c_knit:'Свитеры и свитшоты',c_tee:'Лонгсливы и футболки',c_pants:'Штаны',c_outer:'Куртки',c_acc:'Аксессуары',
+ av_st1:'В наличии · отправка 1–2 дня',av_or1:'Под заказ · ~{n} дней',av_st2:'будет у вас {d} · оплата картой или наложкой',av_or2:'будет у вас {d} · предоплата {p}%, остальное при получении',
+ hero_p:'Erd, Grailz, Undercover, Mastermind, Acne и другие. Что есть в Украине — отправим за 1–2 дня, остальное выкупим в Китае.',
+ board_stock:'В наличии',board_order:'Под заказ',board_note:'Даты — если оформить заказ сегодня',board_v:'будет {d}',
+ hero_cta:'Смотреть каталог',
+ cat_h:'Каталог',f_all:'Все',f_stock:'В наличии',f_order:'Под заказ',
+ a_stock:'в наличии',a_order:'под заказ',
+ size_l:'Размер',size_one:'один размер',avail_l:'Наличие',
+ av_stock:'в наличии',av_order:'под заказ · ~{n} дней',av_will:'будет {d}',
+ pay_stock:'Оплата картой или наложенным платежом',pay_order:'Предоплата {p}%, остальное при получении',
+ add:'В корзину',pick_size:'Выберите размер',in_cart:'Уже в корзине',added:'Добавлено в корзину',
+ total:'Итого',checkout:'Оформить заказ',remove:'Убрать',empty:'В корзине пусто',to_cat:'Вернуться в каталог',
+ ci_stock:'в наличии · будет {d}',ci_order:'под заказ · будет {d}',
+ co_h:'Оформление',s_items:'Ваш заказ',s_contact:'Контакты',name_l:'Имя',name_ph:'Как к вам обращаться',phone_l:'Телефон',
+ s_ship:'Доставка Новой Почтой',city_l:'Город',city_ph:'Начните вводить город',branch_l:'Отделение или почтомат',branch_ph:'Номер, например 12',
+ s_pay:'Оплата',pay_card:'Картой онлайн',pay_cod:'Наложенный платёж',
+ pn_card:'Вещи в наличии оплачиваются сразу.',pn_cod:'Вещи в наличии оплачиваются при получении.',pn_ord:'За вещи под заказ — предоплата {p}% картой, остальное при получении.',
+ st1:'оплата',st2:'выкуп<i class="cn"> в Китае</i>',st3:'в пути',st4:'Новая Почта',
+ ack:'Понимаю, что вещь под заказ, доставка ~{n} дней',
+ s_goods:'Товары',pay_now:'К оплате сейчас',pay_later:'При получении',np_note:'Доставка Новой Почтой — по тарифу перевозчика, оплачивается при получении.',
+ confirm:'Подтвердить заказ',
+ e_name:'Укажите имя',e_phone:'Введите номер полностью',e_city:'Выберите город',e_branch:'Укажите номер отделения',
+ done_h:'Заказ готов',done_no:'Заказ {n}',done_p:'Отправьте его менеджеру в Telegram — он подтвердит наличие и ответит по оплате.',
+ tg_btn:'Отправить в Telegram @danilovidd',copy:'Скопировать текст',copied:'Скопировано',
+ foot_h:'Контакты',foot_p:'Скинь фото в личку — посчитаем цену и срок.',c_ch:'Канал',
+ o_h:'Заказ {n}',o_name:'Имя',o_phone:'Телефон',o_ship:'Доставка',o_np:'Новая Почта, {c}, отделение {b}',o_pay:'Оплата',o_card:'картой онлайн',o_cod:'наложенный платёж',
+ o_items:'Товары',o_stock:'в наличии, будет {d}',o_order:'под заказ (~{n} дней), будет {d}',
+ o_total:'Итого',o_now:'К оплате сейчас',o_later:'При получении',o_ack:'Подтверждаю: вещь под заказ, доставка ~{n} дней.',
+ uah:'₴',
+ t_long:'лонгслив',t_knit:'свитер',t_crew:'свитшот',t_pants:'штаны',t_zip:'зип-худи',t_hoodie:'худи',t_cross:'подвеска-крест',t_jacket:'куртка',t_tee:'футболка',t_polo:'поло',t_jeans:'джинсы',t_biker:'косуха',t_xbelt:'ремень с крестом',
+ s_acc:'аксессуар',s_jk:'куртка'
+},
+ua:{
+ nav_catalog:'Каталог',nav_contacts:'Контакти',cart:'Кошик',close:'Закрити',lang_aria:'Мова',
+ tagline:'стрітвір з доставкою по Україні',my_cart:'Мій кошик',ban1:'Худі',ban2:'Светри',
+ adv1:'В наявності',adv1s:'відправка за 1–2 дні',adv2:'Під замовлення',adv2s:'викуп у Китаї, ~20 днів',adv3:'Викуп по фото',adv3s:'знайдемо річ, якої немає в каталозі',adv4:'Нова Пошта',adv4s:'доставка по всій Україні',
+ c_all:'Усі',c_new:'Новинки',c_hood:'Худі та зіпки',c_knit:'Светри та світшоти',c_tee:'Лонгсліви та футболки',c_pants:'Штани',c_outer:'Куртки',c_acc:'Аксесуари',
+ av_st1:'В наявності · відправка 1–2 дні',av_or1:'Під замовлення · ~{n} днів',av_st2:'буде у вас {d} · оплата карткою або накладеним',av_or2:'буде у вас {d} · передоплата {p}%, решта при отриманні',
+ hero_p:'Erd, Grailz, Undercover, Mastermind, Acne та інші. Що є в Україні — відправимо за 1–2 дні, решту викупимо в Китаї.',
+ board_stock:'В наявності',board_order:'Під замовлення',board_note:'Дати — якщо оформити замовлення сьогодні',board_v:'буде {d}',
+ hero_cta:'Дивитися каталог',
+ cat_h:'Каталог',f_all:'Усі',f_stock:'В наявності',f_order:'Під замовлення',
+ a_stock:'в наявності',a_order:'під замовлення',
+ size_l:'Розмір',size_one:'один розмір',avail_l:'Наявність',
+ av_stock:'в наявності',av_order:'під замовлення · ~{n} днів',av_will:'буде {d}',
+ pay_stock:'Оплата карткою або накладеним платежем',pay_order:'Передоплата {p}%, решта при отриманні',
+ add:'До кошика',pick_size:'Оберіть розмір',in_cart:'Уже в кошику',added:'Додано до кошика',
+ total:'Разом',checkout:'Оформити замовлення',remove:'Прибрати',empty:'У кошику порожньо',to_cat:'Повернутися до каталогу',
+ ci_stock:'в наявності · буде {d}',ci_order:'під замовлення · буде {d}',
+ co_h:'Оформлення',s_items:'Ваше замовлення',s_contact:'Контакти',name_l:"Ім'я",name_ph:'Як до вас звертатися',phone_l:'Телефон',
+ s_ship:'Доставка Новою Поштою',city_l:'Місто',city_ph:'Почніть вводити місто',branch_l:'Відділення або поштомат',branch_ph:'Номер, наприклад 12',
+ s_pay:'Оплата',pay_card:'Карткою онлайн',pay_cod:'Накладений платіж',
+ pn_card:'Речі в наявності оплачуються одразу.',pn_cod:'Речі в наявності оплачуються при отриманні.',pn_ord:'За речі під замовлення — передоплата {p}% карткою, решта при отриманні.',
+ st1:'оплата',st2:'викуп<i class="cn"> у Китаї</i>',st3:'в дорозі',st4:'Нова Пошта',
+ ack:'Розумію, що річ під замовлення, доставка ~{n} днів',
+ s_goods:'Товари',pay_now:'До сплати зараз',pay_later:'При отриманні',np_note:'Доставка Новою Поштою — за тарифом перевізника, сплачується при отриманні.',
+ confirm:'Підтвердити замовлення',
+ e_name:"Вкажіть ім'я",e_phone:'Введіть номер повністю',e_city:'Оберіть місто',e_branch:'Вкажіть номер відділення',
+ done_h:'Замовлення готове',done_no:'Замовлення {n}',done_p:'Надішліть його менеджеру в Telegram — він підтвердить наявність і відповість щодо оплати.',
+ tg_btn:'Надіслати в Telegram @danilovidd',copy:'Скопіювати текст',copied:'Скопійовано',
+ foot_h:'Контакти',foot_p:'Скинь фото в особисті — порахуємо ціну і строк.',c_ch:'Канал',
+ o_h:'Замовлення {n}',o_name:"Ім'я",o_phone:'Телефон',o_ship:'Доставка',o_np:'Нова Пошта, {c}, відділення {b}',o_pay:'Оплата',o_card:'карткою онлайн',o_cod:'накладений платіж',
+ o_items:'Товари',o_stock:'в наявності, буде {d}',o_order:'під замовлення (~{n} днів), буде {d}',
+ o_total:'Разом',o_now:'До сплати зараз',o_later:'При отриманні',o_ack:'Підтверджую: річ під замовлення, доставка ~{n} днів.',
+ uah:'₴',
+ t_long:'лонгслів',t_knit:'светр',t_crew:'світшот',t_pants:'штани',t_zip:'зіп-худі',t_hoodie:'худі',t_cross:'підвіска-хрест',t_jacket:'куртка',t_tee:'футболка',t_polo:'поло',t_jeans:'джинси',t_biker:'косуха',t_xbelt:'ремінь із хрестом',
+ s_acc:'аксесуар',s_jk:'куртка'
+}};
+
+/* ---------- helpers ---------- */
+var $=function(s,r){return (r||document).querySelector(s)};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+var lang='ru';
+try{var sl=localStorage.getItem('sc_lang');if(sl==='ua'||sl==='ru')lang=sl}catch(e){}
+function t(k,v){var s=(D[lang]&&D[lang][k]);if(s==null){console.warn('i18n miss',lang,k);return k}
+  if(v)for(var x in v)s=s.split('{'+x+'}').join(v[x]);return s}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+
+/* деньги — целые копейки */
+function kop(uah){return uah*100}
+function pre(k){return Math.floor((k*PREPAY_PCT+50)/100)}
+function money(k){var u=Math.floor(k/100),r=k%100,s=String(u).replace(/\B(?=(\d{3})+(?!\d))/g,'\u00a0');
+  if(r)s+=','+(r<10?'0':'')+r;return s+'\u00a0'+t('uah')}
+
+/* даты */
+function baseDate(){
+  var m=/[?&]today=(\d{4})-(\d{2})-(\d{2})/.exec(location.search);
+  if(m)return {y:+m[1],m:+m[2]-1,d:+m[3]};
+  var n=new Date();return {y:n.getFullYear(),m:n.getMonth(),d:n.getDate()}}
+function plus(n){var b=baseDate(),x=new Date(Date.UTC(b.y,b.m,b.d+n));return {m:x.getUTCMonth(),d:x.getUTCDate()}}
+function range(a,b){var x=plus(a),y=plus(b),M=MONTHS[lang];
+  if(a===b)return x.d+'\u00a0'+M[x.m];
+  if(x.m===y.m)return x.d+'–'+y.d+'\u00a0'+M[y.m];
+  return x.d+'\u00a0'+M[x.m]+' – '+y.d+'\u00a0'+M[y.m]}
+function dateOf(it){return it.m==='st'?range(STOCK_DAYS[0],STOCK_DAYS[1]):range(ORDER_DAYS[0],ORDER_DAYS[1])}
+
+/* названия */
+function title(it){return it.b||t('t_'+it.ty).replace(/^./,function(c){return c.toUpperCase()})}
+function sub(it){
+  if(it.b)return t('t_'+it.ty);
+  return it.ty==='biker'?t('s_jk'):t('s_acc')}
+function sizesOf(it){return it.s||ORDER_SIZES}
+function sizeLbl(s){return s==='ONE'?t('size_one'):s}
+
+/* ---------- состояние ---------- */
+var cart=[];try{cart=JSON.parse(localStorage.getItem('sc_cart')||'[]').filter(function(c){return BY[c.id]})}catch(e){cart=[]}
+function save(){try{localStorage.setItem('sc_cart',JSON.stringify(cart))}catch(e){}}
+var filter='new',curItem=null,curSize=null,pay='card',finished=null;
+
+/* ---------- переводы статики ---------- */
+function applyStatic(){
+  document.documentElement.lang=lang==='ua'?'uk':'ru';
+  document.title=lang==='ua'?'Street Club — стрітвір з доставкою по Україні':'Street Club — стритвир с доставкой по Украине';
+  $$('[data-i]').forEach(function(e){var k=e.getAttribute('data-i');e.textContent=k==='ack'?t(k,{n:ORDER_LEAD}):t(k)});
+  $$('[data-ip]').forEach(function(e){e.placeholder=t(e.getAttribute('data-ip'))});
+  $$('[data-ia]').forEach(function(e){e.setAttribute('aria-label',t(e.getAttribute('data-ia')))});
+  $$('.lang button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.l===lang)});
+  $('#menu').innerHTML=CATS.map(function(c){return '<button type="button" data-f="'+c+'" aria-pressed="'+(filter===c)+'">'+t('c_'+c)+'</button>'}).join('');
+  $('#catH').textContent=t('c_'+filter);
+  $('#cities').innerHTML=CITIES.map(function(c){return '<option value="'+esc(lang==='ua'?c[0]:c[1])+'">'}).join('');
+  $('#steps').innerHTML=['st1','st2','st3','st4'].map(function(k,i){return (i?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>':'')+'<span>'+t(k)+'</span>'}).join('');
+}
+
+/* ---------- каталог ---------- */
+var CATS=['new','hood','knit','tee','pants','outer','acc'];
+var CAT_OF={hoodie:'hood',zip:'hood',knit:'knit',crew:'knit',long:'tee',tee:'tee',polo:'tee',pants:'pants',jeans:'pants',jacket:'outer',biker:'outer',cross:'acc',xbelt:'acc'};
+function cardTitle(it){var ty=t('t_'+it.ty);ty=ty.charAt(0).toUpperCase()+ty.slice(1);return it.b?ty+' '+it.b:ty}
+function renderGrid(){
+  $('#catH').textContent=t('c_'+filter);
+  $('#grid').innerHTML=ITEMS.filter(function(i){return filter==='new'||CAT_OF[i.ty]===filter}).map(function(i){
+    return '<button type="button" class="card" data-open="'+i.id+'"><div class="ph"><img src="img/p'+i.id+'.webp" width="580" height="550" loading="lazy" alt="'+esc(title(i)+' · '+sub(i))+'"></div>'
+     +'<div class="t">'+esc(cardTitle(i))+'</div>'
+     +'<div class="p">'+money(kop(i.p))+'</div></button>'}).join('');
+}
+function availHTML(it){
+  var d='<span class="nw">'+dateOf(it)+'</span>';
+  if(it.m==='st')return '<div class="row on st"><span class="dot"></span><div><div class="l1">'+t('av_st1')+'</div><div class="l2">'+t('av_st2',{d:d})+'</div></div></div>';
+  return '<div class="row on or"><span class="dot"></span><div><div class="l1">'+t('av_or1',{n:ORDER_LEAD})+'</div><div class="l2">'+t('av_or2',{d:d,p:PREPAY_PCT})+'</div></div></div>';
+}
+
+/* ---------- шторка товара ---------- */
+function openItem(id){
+  var it=BY[id];if(!it)return;curItem=it;curSize=null;
+  $('#shImg').src='img/p'+it.id+'.webp';$('#shImg').alt=title(it)+' · '+sub(it);
+  renderSheet();
+  show('#sheet');$('#shX').focus({preventScroll:true});
+}
+function renderSheet(){
+  var it=curItem;if(!it)return;
+  $('#shT').textContent=cardTitle(it);$('#shTy').textContent='';$('#shPr').textContent=money(kop(it.p));
+  var sz=sizesOf(it);
+  $('#shSz').className='sizes';$('#shEr').textContent='';
+  $('#shSz').innerHTML=sz.map(function(s){return '<button type="button" data-sz="'+s+'" aria-pressed="'+(curSize===s)+'">'+esc(sizeLbl(s))+'</button>'}).join('');
+  $('#shAv').innerHTML=availHTML(it);
+  $('#shAdd').textContent=t('add')+' · '+money(kop(it.p));
+}
+function addToCart(){
+  if(!curSize){$('#shSz').classList.add('bad');$('#shEr').textContent=t('pick_size');return}
+  var dup=cart.some(function(c){return c.id===curItem.id&&c.size===curSize});
+  if(dup){toast(t('in_cart'));return}
+  cart.push({id:curItem.id,size:curSize});save();renderCartBtn();
+  hide('#sheet');renderCart();show('#drawer');
+}
+
+/* ---------- корзина ---------- */
+function renderCartBtn(){$('#cartN').textContent=cart.length}
+function metaLine(c){var it=BY[c.id];
+  return '<b>'+esc(sizeLbl(c.size))+'</b> · <span class="'+(it.m==='st'?'st':'or')+'">'+t(it.m==='st'?'ci_stock':'ci_order',{d:'<span class="nw">'+dateOf(it)+'</span>'})+'</span>'}
+function totalKop(){return cart.reduce(function(a,c){return a+kop(BY[c.id].p)},0)}
+function renderCart(){
+  var L=$('#drL');
+  if(!cart.length){L.innerHTML='<div class="empty"><div>'+t('empty')+'</div><button class="btn" type="button" data-close="1">'+t('to_cat')+'</button></div>';$('#drF').style.display='none';return}
+  $('#drF').style.display='';
+  L.innerHTML=cart.map(function(c,i){var it=BY[c.id];
+    return '<div class="ci"><div class="ph"><img src="img/p'+it.id+'.webp" alt="" width="580" height="550"></div><div style="min-width:0"><div class="n">'+esc(title(it))+(it.b?' · '+esc(sub(it)):'')+'</div><div class="m">'+metaLine(c)+'</div><div class="r"><button class="rm" type="button" data-rm="'+i+'">'+t('remove')+'</button><span>'+money(kop(it.p))+'</span></div></div></div>'}).join('');
+  $('#drTot').textContent=money(totalKop());
+}
+
+/* ---------- оформление ---------- */
+function hasOrder(){return cart.some(function(c){return BY[c.id].m==='or'})}
+function calc(){
+  var st=0,orr=0,orPre=0;
+  cart.forEach(function(c){var k=kop(BY[c.id].p);if(BY[c.id].m==='st')st+=k;else{orr+=k;orPre+=pre(k)}});
+  var tot=st+orr,now=(pay==='card'?st:0)+orPre;
+  return {tot:tot,now:now,later:tot-now,st:st,orr:orr}}
+function renderCo(){
+  $('#coItems').innerHTML=cart.map(function(c){var it=BY[c.id];
+    return '<div class="coi"><div class="ph"><img src="img/p'+it.id+'.webp" alt="" width="580" height="550"></div><div style="min-width:0"><div class="n">'+esc(title(it))+(it.b?' · '+esc(sub(it)):'')+'</div><div class="m">'+metaLine(c)+'</div></div><div class="pp">'+money(kop(it.p))+'</div></div>'}).join('');
+  var ord=hasOrder(),hasSt=cart.some(function(c){return BY[c.id].m==='st'});
+  $('#orderBox').style.display=ord?'':'none';
+  var n=[];
+  if(hasSt)n.push(t(pay==='card'?'pn_card':'pn_cod'));
+  if(ord)n.push(t('pn_ord',{p:PREPAY_PCT}));
+  $('#payNote').textContent=n.join(' ');
+  var k=calc();
+  $('#sT').textContent=money(k.tot);$('#sNow').textContent=money(k.now);$('#sLater').textContent=money(k.later);
+  $('#coGo').disabled=ord&&!$('#ack').checked;
+}
+function openCo(){
+  if(!cart.length)return;
+  hide('#drawer',true);finished=null;$('#co').classList.remove('fin');
+  $('#ack').checked=false;$('#ackL').classList.remove('bad');
+  renderCo();$('#co').classList.add('on');lockOn();$('#co').scrollTop=0;
+}
+function phoneFmt(v){
+  var d=v.replace(/\D/g,'');
+  if(d.indexOf('380')===0)d=d.slice(3);else if(d.indexOf('38')===0)d=d.slice(2);else if(d.charAt(0)==='0')d=d.slice(1);
+  if(d.charAt(0)==='0')d=d.slice(1);
+  d=d.slice(0,9);if(!d&&!/\d/.test(v))return '';
+  var s='+380';if(d.length)s+=' ('+d.slice(0,2);if(d.length>=2)s+=')';
+  if(d.length>2)s+=' '+d.slice(2,5);if(d.length>5)s+='-'+d.slice(5,7);if(d.length>7)s+='-'+d.slice(7,9);
+  return s}
+function phoneDigits(v){return v.replace(/\D/g,'').length}
+function validate(){
+  var ok=true,first=null;
+  function chk(id,good){var f=$('#'+id);f.classList.toggle('bad',!good);if(!good){ok=false;if(!first)first=f}}
+  chk('fN',$('#iN').value.trim().length>=2);
+  chk('fP',phoneDigits($('#iP').value)===12);
+  chk('fC',$('#iC').value.trim().length>=2);
+  chk('fB',/\d/.test($('#iB').value));
+  if(hasOrder()&&!$('#ack').checked){$('#ackL').classList.add('bad');ok=false;if(!first)first=$('#ackL')}
+  if(first)first.scrollIntoView({block:'center',behavior:'auto'});
+  return ok}
+function orderText(no,v){
+  var k=calc(),L=[];
+  L.push(t('o_h',{n:no}));
+  L.push(t('o_name')+': '+v.name);L.push(t('o_phone')+': '+v.phone);
+  L.push(t('o_ship')+': '+t('o_np',{c:v.city,b:v.branch}));
+  L.push(t('o_pay')+': '+t(pay==='card'?'o_card':'o_cod'));
+  L.push('');L.push(t('o_items')+':');
+  cart.forEach(function(c,i){var it=BY[c.id];
+    L.push((i+1)+'. '+title(it)+(it.b?' · '+sub(it):'')+', '+sizeLbl(c.size)+' — '+(it.m==='st'?t('o_stock',{d:dateOf(it)}):t('o_order',{n:ORDER_LEAD,d:dateOf(it)}))+' — '+money(kop(it.p)))});
+  L.push('');L.push(t('o_total')+': '+money(k.tot));L.push(t('o_now')+': '+money(k.now));L.push(t('o_later')+': '+money(k.later));
+  if(hasOrder()){L.push('');L.push(t('o_ack',{n:ORDER_LEAD}))}
+  return L.join('\n')}
+function confirm(){
+  if(hasOrder()&&!$('#ack').checked)return;
+  if(!validate())return;
+  var b=baseDate(),no='SC-'+String(b.m+1).padStart(2,'0')+String(b.d).padStart(2,'0')+'-'+String(1000+Math.floor(Math.random()*9000));
+  finished={no:no,v:{name:$('#iN').value.trim(),phone:$('#iP').value,city:$('#iC').value.trim(),branch:$('#iB').value.trim()},pay:pay,cart:cart.slice()};
+  renderDone();$('#co').classList.add('fin');$('#co').scrollTop=0;
+  cart=[];save();renderCartBtn();
+}
+function renderDone(){
+  if(!finished)return;
+  var saveCart=cart,savePay=pay;cart=finished.cart;pay=finished.pay;
+  var txt=orderText(finished.no,finished.v);
+  cart=saveCart;pay=savePay;
+  $('#doneNo').textContent=t('done_no',{n:finished.no});
+  $('#doneTxt').textContent=txt;
+  $('#tgBtn').href='https://t.me/'+TG+'?text='+encodeURIComponent(txt);
+}
+
+/* ---------- слои ---------- */
+var layers=[];
+function lockOn(){document.documentElement.classList.add('lock')}
+function lockOff(){if(!document.querySelector('.sheet.on,.drawer.on,.co.on'))document.documentElement.classList.remove('lock');
+  if(!document.querySelector('.sheet.on,.drawer.on'))$('#scrim').classList.remove('on')}
+function show(sel){var e=$(sel);e.classList.add('on');$('#scrim').classList.add('on');lockOn()}
+function hide(sel,keepScrim){var e=$(sel);e.classList.remove('on');
+  if(!keepScrim&&!document.querySelector('.sheet.on,.drawer.on'))$('#scrim').classList.remove('on');lockOff()}
+function closeAll(){hide('#sheet');hide('#drawer');
+  if($('#co').classList.contains('on')){$('#co').classList.remove('on')}
+  $('#scrim').classList.remove('on');lockOff()}
+var tt;function toast(m){var e=$('#toast');e.textContent=m;e.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){e.classList.remove('on')},2200)}
+
+/* ---------- события ---------- */
+document.addEventListener('click',function(e){
+  var o=e.target.closest('[data-open]');
+  if(o){e.preventDefault();openItem(+o.dataset.open);return}
+  var sz=e.target.closest('[data-sz]');
+  if(sz){curSize=sz.dataset.sz;$('#shSz').classList.remove('bad');$('#shEr').textContent='';$$('#shSz button').forEach(function(b){b.setAttribute('aria-pressed',b===sz)});return}
+  var rm=e.target.closest('[data-rm]');
+  if(rm){cart.splice(+rm.dataset.rm,1);save();renderCartBtn();renderCart();return}
+  if(e.target.closest('[data-close]')){hide('#drawer');return}
+  var f=e.target.closest('[data-f]');
+  if(f){filter=f.dataset.f;$$('#menu button').forEach(function(b){b.setAttribute('aria-pressed',b===f)});renderGrid();$('#catalog').scrollIntoView();return}
+  var bn=e.target.closest('[data-cat]');
+  if(bn){e.preventDefault();filter=bn.dataset.cat;$$('#menu button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.f===filter)});renderGrid();$('#catalog').scrollIntoView();return}
+  var l=e.target.closest('.lang button');
+  if(l){lang=l.dataset.l;try{localStorage.setItem('sc_lang',lang)}catch(x){}rerender();return}
+});
+$('#scrim').addEventListener('click',function(){hide('#sheet');hide('#drawer')});
+$('#shX').addEventListener('click',function(){hide('#sheet')});
+$('#shAdd').addEventListener('click',addToCart);
+$('#cartBtn').addEventListener('click',function(){renderCart();show('#drawer')});
+$('#drX').addEventListener('click',function(){hide('#drawer')});
+$('#drGo').addEventListener('click',openCo);
+$('#coBack').addEventListener('click',function(){
+  $('#co').classList.remove('on');lockOff();
+  if(!$('#co').classList.contains('fin')){renderCart();show('#drawer')}else{$('#co').classList.remove('fin')}
+});
+$('#toCat').addEventListener('click',function(){$('#co').classList.remove('on','fin');lockOff();$('#iN').value='';$('#iP').value='';$('#iC').value='';$('#iB').value='';$$('.fld').forEach(function(f){f.classList.remove('bad')});location.hash='';$('#catalog').scrollIntoView()});
+$('#ack').addEventListener('change',function(){$('#ackL').classList.remove('bad');renderCo()});
+$$('input[name=pay]').forEach(function(r){r.addEventListener('change',function(){pay=r.value;renderCo()})});
+$('#coGo').addEventListener('click',confirm);
+$('#iP').addEventListener('input',function(){var v=this.value;if(v.length<this.dataset.prev.length&&!/\d$/.test(v)){}this.value=phoneFmt(v);this.dataset.prev=this.value;$('#fP').classList.remove('bad')});
+$('#iP').dataset.prev='';
+$('#iP').addEventListener('focus',function(){if(!this.value){this.value='+380 (';this.dataset.prev=this.value}});
+$('#iP').addEventListener('blur',function(){if(phoneDigits(this.value)<=3)this.value=''});
+['iN','iC','iB'].forEach(function(id){$('#'+id).addEventListener('input',function(){this.parentNode.classList.remove('bad')})});
+$('#cpBtn').addEventListener('click',function(){
+  var txt=$('#doneTxt').textContent,b=this;
+  function ok(){var o=b.textContent;b.textContent=t('copied');setTimeout(function(){b.textContent=t('copy')},1600)}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(ok,function(){})}
+  else{var r=document.createRange();r.selectNodeContents($('#doneTxt'));var s=getSelection();s.removeAllRanges();s.addRange(r);try{document.execCommand('copy');ok()}catch(x){}}
+});
+document.addEventListener('keydown',function(e){
+  if(e.key!=='Escape')return;
+  if($('#co').classList.contains('on')){$('#coBack').click();return}
+  if($('#drawer').classList.contains('on')){hide('#drawer');return}
+  if($('#sheet').classList.contains('on'))hide('#sheet')});
+
+/* ---------- старт ---------- */
+function rerender(){
+  applyStatic();renderGrid();renderCartBtn();renderCart();
+  if(curItem){var s=curSize;renderSheet();curSize=s;$$('#shSz button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.sz===s)})}
+  renderCo();if(finished)renderDone();
+  $('#toast').classList.remove('on');
+  $('#cpBtn').textContent=t('copy');
+}
+rerender();
+window.__sc={D:D,ITEMS:ITEMS,calc:calc,pre:pre};
+})();
+</script>
+</body>
+</html>
