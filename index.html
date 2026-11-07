@@ -64,24 +64,36 @@ a{color:inherit;text-decoration:none}
 .top{transition:box-shadow .25s}
 .top.sc{box-shadow:0 1px 0 var(--line),0 8px 24px rgba(0,0,0,.05);border-bottom-color:transparent}
 .top .bar{display:grid;grid-template-columns:1fr auto 1fr;gap:8px}
-.burg{width:42px;height:42px;display:flex;flex-direction:column;justify-content:center;gap:5px;padding:0 9px;justify-self:start}
-.burg i{display:block;height:2px;background:var(--ink);border-radius:2px;transition:transform .3s,opacity .2s}
-.burg i:nth-child(2){width:70%}
+.burg{position:relative;width:44px;height:44px;margin-left:-8px;justify-self:start;display:block;padding:0}
+.burg span{position:absolute;left:11px;width:22px;height:2px;background:var(--ink);border-radius:2px;transition:transform .45s cubic-bezier(.7,0,.2,1),width .35s cubic-bezier(.7,0,.2,1),opacity .2s,top .45s cubic-bezier(.7,0,.2,1)}
+.burg .b1{top:15px}.burg .b2{top:21px;width:15px}.burg .b3{top:27px}
+.burg:hover .b2{width:22px}
+html.navon .burg .b1{top:21px;transform:rotate(45deg)}
+html.navon .burg .b2{opacity:0;transform:translateX(-8px)}
+html.navon .burg .b3{top:21px;transform:rotate(-45deg)}
+html.navon .top{z-index:50;box-shadow:none}
 .wm{font:700 19px/1 SSerif,Georgia,serif;letter-spacing:.06em;white-space:nowrap;color:var(--ink)}
 .top .wm{justify-self:center}
 .rt{justify-self:end;display:flex;align-items:center;gap:4px}
 .rt .lang{display:none}
 .dnav{display:none}
 .mega{display:none}
-.nav{position:fixed;inset:0 auto 0 0;width:min(420px,100%);z-index:45;background:#fff;transform:translateX(-102%);visibility:hidden;transition:transform .45s cubic-bezier(.2,.8,.2,1),visibility 0s .45s;display:flex;flex-direction:column;overscroll-behavior:contain}
-.nav.on{transform:none;visibility:visible;transition:transform .45s cubic-bezier(.2,.8,.2,1)}
-.nav-h{height:var(--hh);display:flex;align-items:center;justify-content:space-between;padding:0 6px 0 var(--pad);border-bottom:1px solid var(--line);flex:none}
+.nav{position:fixed;left:0;right:0;top:var(--hh);bottom:0;z-index:45;background:#fff;clip-path:inset(0 0 100% 0);visibility:hidden;transition:clip-path .6s cubic-bezier(.7,0,.2,1),visibility 0s .6s;display:flex;flex-direction:column;overscroll-behavior:contain}
+.nav.on{clip-path:inset(0 0 0 0);visibility:visible;transition:clip-path .6s cubic-bezier(.7,0,.2,1)}
+.nav-h{display:none;height:var(--hh);display:flex;align-items:center;justify-content:space-between;padding:0 6px 0 var(--pad);border-bottom:1px solid var(--line);flex:none}
 .nav-x{width:44px;height:44px;display:grid;place-items:center}.nav-x svg{width:22px;height:22px}
 .nav-b{overflow-y:auto;padding:18px var(--pad) calc(24px + env(safe-area-inset-bottom));flex:1;display:flex;flex-direction:column}
 .nav-k{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin-bottom:12px}
 .nav-tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.nt{position:relative;display:block;text-align:left;background:var(--paper);aspect-ratio:1/1.05;overflow:hidden;border-radius:4px;opacity:0;transform:translateY(14px);transition:opacity .4s,transform .4s}
-.nav.on .nt{opacity:1;transform:none}
+.nt{position:relative;display:block;text-align:left;background:var(--paper);aspect-ratio:1/1.05;overflow:hidden;border-radius:4px}
+.nav .nt,.nav .nav-k,.nav-links>*,.nav-f{opacity:0;transform:translateY(22px);transition:opacity .3s,transform .3s}
+.nav .nt img{transform:scale(.82);transition:transform .3s}
+.nav.on .nt,.nav.on .nav-k,.nav.on .nav-links>*,.nav.on .nav-f{opacity:1;transform:none;transition:opacity .55s cubic-bezier(.2,.8,.2,1),transform .7s cubic-bezier(.2,.8,.2,1)}
+.nav.on .nt img{transform:none;transition:transform .9s cubic-bezier(.2,.8,.2,1);transition-delay:inherit}
+.nav.on .nav-k{transition-delay:.18s}
+.nav.on .nav-links>*:nth-child(1){transition-delay:.42s}.nav.on .nav-links>*:nth-child(2){transition-delay:.48s}.nav.on .nav-links>*:nth-child(3){transition-delay:.54s}
+.nav.on .nav-f{transition-delay:.6s}
+.nav-links>* svg{transition:transform .3s}.nav-links>*:hover svg{transform:translateX(4px)}
 .nt img{position:absolute;inset:6% 6% 22%;width:88%;height:72%;object-fit:contain;mix-blend-mode:multiply}
 .nt span{position:absolute;left:10px;right:10px;bottom:9px;font-weight:700;font-size:13px;line-height:1.2}
 .nav-links{margin-top:18px;border-top:1px solid var(--line)}
@@ -90,6 +102,7 @@ a{color:inherit;text-decoration:none}
 .nav-f{margin-top:auto;padding-top:22px;display:flex;align-items:center;justify-content:space-between}
 .nav-tg{font-size:13px;color:var(--mut);font-weight:600}
 .scrim.nv{z-index:44}
+.nav .nav-h{display:none}
 
 /* === hero slider === */
 .hs{position:relative;overflow:hidden;background:#f4f4f2}
@@ -158,7 +171,7 @@ a{color:inherit;text-decoration:none}
 .tile.big .go{margin-top:12px}
 
 /* catalog tabs sticky under header */
-.tabs-w{position:sticky;top:var(--hh);z-index:15;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin-bottom:16px}
+.tabs-w{position:relative;background:#fff;border-bottom:1px solid var(--line);margin-bottom:16px}
 .cat{padding-top:20px}
 .cat-h{display:flex;align-items:baseline;gap:10px;text-align:left}
 .cat-h span{color:var(--mut);font-size:13px;font-weight:600}
@@ -410,10 +423,9 @@ a{color:inherit;text-decoration:none}
 </style>
 </head>
 <body>
-<div class="strip" data-i="strip"></div>
 <header class="top" id="hdr">
   <div class="wrap bar">
-    <button class="burg" id="burg" type="button" data-ia="menu" aria-expanded="false"><i></i><i></i><i></i></button>
+    <button class="burg" id="burg" type="button" data-ia="menu" aria-expanded="false"><span class="b1"></span><span class="b2"></span><span class="b3"></span></button>
     <a class="wm" href="#top" aria-label="Street Club">STREET CLUB</a>
     <nav class="dnav" id="dnav"></nav>
     <div class="rt"><div class="lang" role="group" data-ia="lang_aria"><button type="button" data-l="ua" aria-pressed="false">Укр</button><button type="button" data-l="ru" aria-pressed="true">Рус</button></div><button class="cartb" id="cartBtn" type="button" data-ia="cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a1 1 0 0 1-1 .8H7.2a1 1 0 0 1-1-.8L5 8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cl" data-i="my_cart"></span><b id="cartN">0</b></button></div>
@@ -921,10 +933,10 @@ document.addEventListener('click',function(e){
   var l=e.target.closest('.lang button');
   if(l){lang=l.dataset.l;try{localStorage.setItem('sc_lang',lang)}catch(x){}rerender();return}
 });
-$('#scrim').addEventListener('click',function(){hide('#sheet');hide('#drawer')});
+$('#scrim').addEventListener('click',function(){closeNav();hide('#sheet');hide('#drawer')});
 $('#shX').addEventListener('click',function(){hide('#sheet')});
 $('#shAdd').addEventListener('click',addToCart);
-$('#cartBtn').addEventListener('click',function(){renderCart();show('#drawer')});
+$('#cartBtn').addEventListener('click',function(){closeNav();renderCart();show('#drawer')});
 $('#drX').addEventListener('click',function(){hide('#drawer')});
 $('#drGo').addEventListener('click',openCo);
 $('#coBack').addEventListener('click',function(){
@@ -948,6 +960,7 @@ $('#cpBtn').addEventListener('click',function(){
 });
 document.addEventListener('keydown',function(e){
   if(e.key!=='Escape')return;
+  if($('#nav').classList.contains('on')){closeNav();return}
   if($('#co').classList.contains('on')){$('#coBack').click();return}
   if($('#drawer').classList.contains('on')){hide('#drawer');return}
   if($('#sheet').classList.contains('on'))hide('#sheet')});
@@ -961,14 +974,14 @@ function words(n){var a=n%10,b=n%100;return n+' '+t(a===1&&b!==11?'w1':(a>=2&&a<
 function renderNavs(){
   $('#tiles').innerHTML=CATS.map(function(c){return '<button type="button" class="tile'+(c==='new'?' big':'')+'" data-f="'+c+'"><img src="img/p'+TILE_IMG[c]+'.webp" alt="" width="720" height="720" loading="lazy"><span class="tl"><span><b>'+t(c==='new'?'all_items':'c_'+c)+'</b><small>'+words(countOf(c))+'</small></span><span class="go">'+ARW+'</span></span></button>'}).join('');
   var small=CATS.filter(function(c){return c!=='new'});
-  var nt=function(c,i){return '<button type="button" class="nt" data-f="'+c+'" style="transition-delay:'+(0.06+i*0.04)+'s"><img src="img/p'+TILE_IMG[c]+'.webp" alt="" width="720" height="720" loading="lazy"><span>'+t('c_'+c)+'</span></button>'};
+  var nt=function(c,i){return '<button type="button" class="nt" data-f="'+c+'" style="transition-delay:'+(0.22+i*0.04)+'s"><img src="img/p'+TILE_IMG[c]+'.webp" alt="" width="720" height="720" loading="lazy"><span>'+t('c_'+c)+'</span></button>'};
   $('#navTiles').innerHTML=small.map(nt).join('');
   $('#megaIn').innerHTML=small.map(nt).join('');
   $('#dnav').innerHTML='<button type="button" data-f="new" data-mega>'+t('catalog')+'</button>'+['hood','knit','pants','outer'].map(function(c){return '<button type="button" data-f="'+c+'">'+t('c_'+c)+'</button>'}).join('')+'<button type="button" onclick="document.getElementById(\'contacts\').scrollIntoView()">'+t('contacts')+'</button>';
   var n=$('#catN');if(n)n.textContent=words(countOf(filter));
 }
-function openNav(){$('#nav').classList.add('on');$('#nav').setAttribute('aria-hidden','false');$('#burg').setAttribute('aria-expanded','true');$('#scrim').classList.add('on','nv');lockOn()}
-function closeNav(){if(!$('#nav').classList.contains('on'))return;$('#nav').classList.remove('on');$('#nav').setAttribute('aria-hidden','true');$('#burg').setAttribute('aria-expanded','false');lockOff()}
+function openNav(){if($('#nav').classList.contains('on')){closeNav();return}document.documentElement.classList.add('navon');$('#nav').classList.add('on');$('#nav').setAttribute('aria-hidden','false');$('#burg').setAttribute('aria-expanded','true');$('#scrim').classList.add('on','nv');lockOn()}
+function closeNav(){if(!$('#nav').classList.contains('on'))return;document.documentElement.classList.remove('navon');$('#nav').classList.remove('on');$('#nav').setAttribute('aria-hidden','true');$('#burg').setAttribute('aria-expanded','false');lockOff()}
 $('#burg').addEventListener('click',openNav);
 $('#navX').addEventListener('click',closeNav);
 $('#nav').addEventListener('click',function(e){if(e.target.closest('[data-f],[data-navclose],a'))closeNav()},true);
