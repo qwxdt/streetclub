@@ -1721,6 +1721,19 @@ addEventListener('scroll',function(){$('#hdr').classList.toggle('sc',scrollY>8)}
   requestAnimationFrame(function(){go(0)});
 })();
 
+/* ---------- многостраничник: разделы, товары и корзина — отдельные страницы ---------- */
+var MP={"hood": "hoodies", "knit": "sweaters", "tee": "tees", "pants": "pants", "outer": "jackets", "shoes": "shoes", "acc": "accessories"};
+document.addEventListener('click',function(e){
+  var f=e.target.closest('#tiles [data-f],#navTiles [data-f],#megaIn [data-f],#dnav [data-f],#fLinks [data-f],.sl-b[data-f],.sec-a[data-f],.nav-links [data-f],#srRes [data-f]');
+  if(f){e.preventDefault();e.stopPropagation();location.href='catalog/'+(f.dataset.f==='new'?'':MP[f.dataset.f]+'/');return}
+  var o=e.target.closest('[data-open]');
+  if(o&&!o.closest('#co')){e.preventDefault();e.stopPropagation();location.href='product/'+o.dataset.open+'/';return}
+  if(e.target.closest('#cartBtn,#adCart')){e.preventDefault();e.stopPropagation();location.href='cart/';return}
+  if(e.target.closest('#srAll')){e.preventDefault();e.stopPropagation();location.href='catalog/?q='+encodeURIComponent($('#sq').value.trim());return}
+  if(e.target.closest('#coBack')){var co=$('#co');if(!co.classList.contains('py')&&!co.classList.contains('fin')){e.preventDefault();e.stopPropagation();location.href='cart/'}}
+},true);
+$('#sq').addEventListener('keydown',function(e){if(e.key==='Enter'&&this.value.trim()){e.preventDefault();e.stopImmediatePropagation();location.href='catalog/?q='+encodeURIComponent(this.value.trim())}},true);
+
 /* ---------- старт ---------- */
 function rerender(){
   applyStatic();renderNavs();renderGrid(true);renderCartBtn();renderCart();
@@ -1732,6 +1745,7 @@ function rerender(){
 }
 rerender();
 requestAnimationFrame(function(){document.documentElement.classList.add('ready')});
+if(location.hash==='#checkout'){try{history.replaceState(null,'',location.pathname+location.search)}catch(x){}if(cart.length)setTimeout(openCo,60)}
 window.__sc={D:D,ITEMS:ITEMS,calc:calc,pre:pre,luhn:luhn,get cart(){return cart},setPay:function(v){payM=v}};
 })();
 </script>
